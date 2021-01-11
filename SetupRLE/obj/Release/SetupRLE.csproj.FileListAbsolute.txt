@@ -1,0 +1,14 @@
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\bin\Release\SetupRLE.exe.config
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\bin\Release\SetupRLE.exe.manifest
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\bin\Release\SetupRLE.application
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\bin\Release\SetupRLE.exe
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\bin\Release\SetupRLE.pdb
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.frm.resources
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.Properties.Resources.resources
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.csproj.GenerateResource.Cache
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.TrustInfo.xml
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.exe.manifest
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.application
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.exe
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.pdb
+C:\Users\dbenites\documents\visual studio 2015\Projects\SetupRLE\SetupRLE\obj\Release\SetupRLE.csprojResolveAssemblyReference.cache
