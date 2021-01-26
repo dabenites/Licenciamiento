@@ -10,6 +10,8 @@ using System.Text;
 using System.Net.NetworkInformation;
 using System.Management;
 using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SetupRLE
 {
@@ -17,6 +19,7 @@ namespace SetupRLE
     {
 
         private int cantidaArchivos = 0;
+        List<string> lctArchivo = new List<string>();
         public frm()
         {
             InitializeComponent();
@@ -571,6 +574,16 @@ namespace SetupRLE
         private void frm_Load(object sender, EventArgs e)
         {
             MuestroInformacionSegunEstado(1);
+
+
+            txt_macaddress_l.Text= GetMacAddress();
+            txt_motherborad_l.Text = getMotherBoard();
+            txt_hardiskt_l.Text= getHardDisk();
+            txt_cpu_l.Text = getCPU();
+
+            string appData = System.Environment.GetEnvironmentVariable("APPDATA");
+            lbl_destino.Text = appData + "\\login.key";
+            lbl_appdata.Text = appData;
         }
 
         private void MuestroInformacionSegunEstado(int estado)
@@ -996,9 +1009,66 @@ namespace SetupRLE
 
         }
 
+
+
+        private string buscoCorreoByLogin(string login)
+        {
+
+            string correo = "";
+
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = " SELECT " +
+                                    " t1.correo_electronico " +
+                           " FROM " +
+                                    " sist_user AS t1 " +
+                           "  WHERE " +
+                                    " t1.login = '" + login + "'";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+
+
+            try
+            {
+                databaseConnection.Open();
+                reader = commandDatabase.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        correo = reader.GetString(0);
+                    }
+                }
+                else
+                {
+
+                }
+
+                databaseConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+
+            return correo;
+        }
+
         private void button1_Click_2(object sender, EventArgs e)
         {
-            string path = @"C:\\Users\\dbenites\\Desktop\\RENE LAGOS ENGINEERS\\RLE INSTALL\\glara2\\login.key";
+            string path = @"C:\\Users\\dbenites\\Desktop\\RENE LAGOS ENGINEERS\\RLE INSTALL\\aquino2\\login.key";
 
 
             //DIRECCION FISICA:30 - 9C - 23 - 0D - B5 - D0
@@ -1006,12 +1076,12 @@ namespace SetupRLE
 
             try
             {
-                string correoUser = "glaravega47@gmail.com";
-                string macAddress = "448A5B6A2605";
+                string correoUser = "ang.aquino92@gmail.com";
+                string macAddress = "D43D7E56EC7B";
                 string motherBoard = "To be filled by O.E.M.";
-                string hardDisk = "4638C8FD";
+                string hardDisk = "A4ADE838";
                 string cpu = "BFEBFBFF000306A9";
-                string g = "glara2";
+                string g = "aaquino2";
                 // Create the file, or overwrite if the file exists.
                 using (FileStream fs = File.Create(path))
                 {
@@ -1037,6 +1107,388 @@ namespace SetupRLE
             {
                 Console.WriteLine(ex.ToString());
             }
+        }
+
+        private void btn_Folder_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog fbd_ruta = new System.Windows.Forms.FolderBrowserDialog();
+            fbd_ruta.Description = "Seleccione donde quedara la licencia";
+
+            if (fbd_ruta.ShowDialog() == DialogResult.OK)
+            {
+                string ruta  = fbd_ruta.SelectedPath + "\\login.key";
+                lbl_destino.Text = ruta;
+            }
+
+        }
+
+        private void btn_Generar_Click(object sender, EventArgs e)
+        {
+            string path = lbl_destino.Text;
+
+
+            //DIRECCION FISICA:30 - 9C - 23 - 0D - B5 - D0
+            //LOGIN: dbenites
+
+            try
+            {
+                string correoUser = txt_correo_base.Text;
+                string macAddress = txt_macadress_bd.Text;
+                string motherBoard = txt_morherboard_bd.Text;
+                string hardDisk = txt_hardisk_bd.Text;
+                string cpu = txt_cpu_bd.Text;
+                string g = txt_login_l.Text;
+                // Create the file, or overwrite if the file exists.
+                using (FileStream fs = File.Create(path))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes("DIRECCION FISICA:" + macAddress + "\nLOGIN:" + g + "\nMOTHERBOARD:" + motherBoard + "\nHARDDISK:" + hardDisk + "\nCPU:" + cpu + "");
+                    // Add some information to the file.
+                    fs.Write(info, 0, info.Length);
+                }
+
+                // Open the stream and read it back.
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    string s = "";
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        Console.WriteLine(s);
+                    }
+                }
+                string keyEncrypter = "renelago";
+                EncryptFile(path, keyEncrypter);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            btn_Buscar_Click(sender, e);
+        }
+
+        private void adminitraciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_LecturaLicencia_Click(object sender, EventArgs e)
+        {
+            ///
+            // revisare la informacion de la licencia cargada en el equipo.
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.ShowDialog();
+            openFileDialog1.Title = "Buscar la Licencia para uso de rutinas revit";
+            openFileDialog1.InitialDirectory = System.Environment.GetEnvironmentVariable("APPDATA");
+            //openFileDialog1.DefaultExt = "key";
+
+            string rutaArchivo = openFileDialog1.FileName;
+
+            if (File.Exists(rutaArchivo))
+            {
+                // lectura del archivo de licenciamiento.
+                string appData = System.Environment.GetEnvironmentVariable("APPDATA");
+                
+                string keyEncrypter = "renelago";
+
+                //EncryptFile(file, keyEncrypter);
+                DencryptFile(rutaArchivo, keyEncrypter);
+
+                // Leeer el archivo de configuracion entregar las creadenciales del LOGIN y MAC
+                //Dictionary<string, string> informacion = LecturaArchivoLicencia(file);
+
+                List<string> informacion = LecturaArchivoLicencia(rutaArchivo);
+                lctArchivo = informacion;
+
+                EncryptFile(rutaArchivo, keyEncrypter);
+
+
+                //___ cargar la informacion. 
+
+                ///string login = Base_aws.getUserByFilev2(informacion[1], informacion[2], informacion[3], informacion[4]);
+                txt_correo_equipo.Text = buscoCorreoByLogin(informacion[1]);
+                txt_macaddress_equipo.Text = informacion[0];
+                txt_motherboard_equipo.Text = informacion[2];
+                txt_hardisk_equipo.Text = informacion[3];
+                txt_cpu_equipo.Text = informacion[4];
+                txt_login_equipo.Text = informacion[1];
+
+                // verificar los componentes. 
+                if (txt_macaddress_equipo.Text == txt_macaddress_l.Text) { ptb_macaddres.BackColor = System.Drawing.Color.Green; }
+                else { ptb_macaddres.BackColor = System.Drawing.Color.Red; }
+
+                if (txt_motherboard_equipo.Text == txt_motherborad_l.Text) { ptb_motherboard.BackColor = System.Drawing.Color.Green; }
+                else { ptb_motherboard.BackColor = System.Drawing.Color.Red; }
+
+                if (txt_hardisk_equipo.Text == txt_hardiskt_l.Text) { ptb_hardisk.BackColor = System.Drawing.Color.Green; }
+                else { ptb_hardisk.BackColor = System.Drawing.Color.Red; }
+
+                if (txt_cpu_equipo.Text == txt_cpu_l.Text) { ptb_cpu.BackColor = System.Drawing.Color.Green; }
+                else { ptb_cpu.BackColor = System.Drawing.Color.Red; }
+
+
+
+
+
+            }
+
+        }
+
+        static void DencryptFile(string file, string key)
+        {
+            byte[] plainContent = File.ReadAllBytes(file);
+
+            using (var DES = new DESCryptoServiceProvider())
+            {
+                DES.IV = Encoding.UTF8.GetBytes(key);
+                DES.Key = Encoding.UTF8.GetBytes(key);
+                DES.Mode = CipherMode.CBC;
+                DES.Padding = PaddingMode.PKCS7;
+
+                using (var memStream = new MemoryStream())
+                {
+                    CryptoStream cryptoStream = new CryptoStream(memStream, DES.CreateDecryptor(), CryptoStreamMode.Write);
+
+                    cryptoStream.Write(plainContent, 0, plainContent.Length);
+                    cryptoStream.FlushFinalBlock();
+                    File.WriteAllBytes(file, memStream.ToArray());
+                }
+            }
+
+        }
+
+        private List<string> LecturaArchivoLicencia(string rutaArchivo)
+        {
+            //Dictionary<string, string> info = new Dictionary<string, string>();
+            List<string> informacion = new List<string>();
+            // 0 LOGIN
+            // 1 MAC
+            // 2  
+
+            string line = "";
+            using (StreamReader file = new StreamReader(rutaArchivo))
+            {
+                string[] separators = { ":" };
+                string mac = "";
+                string login = "";
+                while ((line = file.ReadLine()) != null)                //Leer linea por linea
+                {
+                    string[] words = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                    if (words.Count() == 2)
+                    {
+                        switch (words[0])
+                        {
+                            case "DIRECCION FISICA":
+                                informacion.Add(words[1]);
+                                break;
+                            case "LOGIN":
+                                informacion.Add(words[1]);
+                                break;
+                            case "MOTHERBOARD":
+                                informacion.Add(words[1]);
+                                break;
+                            case "HARDDISK":
+                                informacion.Add(words[1]);
+                                break;
+                            case "CPU":
+                                informacion.Add(words[1]);
+                                break;
+                        }
+                    }
+                }
+                //info.Add(login, mac);
+                file.Close();
+            }
+
+            return informacion;
+        }
+
+        private void btn_Buscar_Click(object sender, EventArgs e)
+        {
+            // 
+            List<string> informacion = informacionLicenciaByLogin(txt_login_l.Text);
+
+            if (informacion.Count > 0)
+            {
+                txt_correo_base.Text = informacion[0];
+                txt_macadress_bd.Text = informacion[1];
+                txt_morherboard_bd.Text = informacion[2];
+                txt_hardisk_bd.Text = informacion[3];
+                txt_cpu_bd.Text = informacion[4];
+
+
+                if (informacion[1] != "")
+                {
+                    btn_liberar.Visible = true;
+                    btn_Generar.Visible = false;
+                    btn_ImportarIds.Visible = false;
+                }
+                else
+                {
+                    btn_liberar.Visible = false;
+                    btn_Generar.Visible = true;
+                    btn_ImportarIds.Visible = true;
+                    //txt_macadress_bd.Text = txt_macaddress_l.Text;
+                    //txt_morherboard_bd.Text = txt_motherborad_l.Text;
+                    //txt_hardisk_bd.Text = txt_hardiskt_l.Text;
+                    //txt_cpu_bd.Text = txt_cpu_l.Text;
+
+                }
+            }
+            else
+            { 
+             // enviar mensaje que 
+            }
+
+        }
+
+
+        private List<string> informacionLicenciaByLogin(string login)
+        {
+            List<string> informacion = new List<string>();
+
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = " SELECT " +
+                                    " t1.correo_electronico, " +
+                                    " if (t2.mac IS NULL , '', t2.mac)," +
+                                    " if (t2.motherBoard IS NULL , '', t2.motherBoard) , " +
+                                    " if (t2.harddisk IS NULL , '', t2.harddisk), " +
+                                    " if (t2.cpu IS NULL , '', t2.cpu) " +
+                            " FROM " +
+                                    " sist_user AS t1 " +
+                                    " LEFT JOIN sist_user_keys AS t2 ON t1.login = t2.login " +
+                            " WHERE " +
+                                    " t1.login = '" + login + "' " ;
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+
+
+            try
+            {
+                databaseConnection.Open();
+                reader = commandDatabase.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        informacion.Add(reader.GetString(0));
+                        informacion.Add(reader.GetString(1));
+                        informacion.Add(reader.GetString(2));
+                        informacion.Add(reader.GetString(3));
+                        informacion.Add(reader.GetString(4));
+                    }
+                }
+                else
+                {
+
+                }
+
+                databaseConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+
+            return informacion;
+
+        }
+
+        private void btn_liberar_Click(object sender, EventArgs e)
+        {
+            // para poder eliminar la licencia tenemos que eliminar los registros de las tablas 
+
+            // sist_user_install
+            // sist_user_keys
+
+            BorrarLicenciaUserInstall(txt_correo_base.Text);
+            BorrarLicenciaUserKeys(txt_login_l.Text);
+
+            // limpiar las variables 
+            txt_macadress_bd.Text = "";
+            txt_morherboard_bd.Text = "";
+            txt_hardisk_bd.Text = "";
+            txt_cpu_bd.Text = "";
+
+            btn_Buscar_Click(sender, e);
+        }
+
+        private Boolean BorrarLicenciaUserInstall(string correo)
+        {
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+            string query = "DELETE FROM sist_user_install where mailSolicitante = '" + correo + "'";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(query, databaseConnection);
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error " + ex.Message);
+                return false;
+            }
+
+        }
+        private Boolean BorrarLicenciaUserKeys(string login)
+        {
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+            string query = "DELETE FROM sist_user_keys  where login = '" + login + "'";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(query, databaseConnection);
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error " + ex.Message);
+                return false;
+            }
+
+        }
+
+        private void btn_ImportarIds_Click(object sender, EventArgs e)
+        {
+            txt_macadress_bd.Text = txt_macaddress_l.Text;
+            txt_morherboard_bd.Text = txt_motherborad_l.Text;
+            txt_hardisk_bd.Text = txt_hardiskt_l.Text;
+            txt_cpu_bd.Text = txt_cpu_l.Text;
         }
     }
 }
