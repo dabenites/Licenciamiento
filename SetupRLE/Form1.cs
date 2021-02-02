@@ -12,6 +12,7 @@ using System.Management;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
 namespace SetupRLE
 {
@@ -92,6 +93,7 @@ namespace SetupRLE
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 return false;
                 throw;
             }
@@ -584,6 +586,34 @@ namespace SetupRLE
             string appData = System.Environment.GetEnvironmentVariable("APPDATA");
             lbl_destino.Text = appData + "\\login.key";
             lbl_appdata.Text = appData;
+
+
+           // cargaModulos();
+
+            tbp_manual.Parent = null;
+            tbp_Permisos.Parent = null;
+        }
+
+
+        private void cargaModulos( Dictionary<int,int> permisos)
+        {
+            // carga de los modulos
+            Dictionary<int, List<string>> informacion = buscarModulos();
+
+
+            dgw_permisos.Rows.Clear();
+
+            foreach (int k in informacion.Keys)
+            {
+                if (permisos.ContainsKey(k))
+                {
+                    dgw_permisos.Rows.Add(k, true, informacion[k][2], informacion[k][1]);
+                }
+                else
+                {
+                    dgw_permisos.Rows.Add(k, false, informacion[k][2], informacion[k][1]);
+                }
+            }
         }
 
         private void MuestroInformacionSegunEstado(int estado)
@@ -1010,6 +1040,71 @@ namespace SetupRLE
         }
 
 
+        private Dictionary<int, List<string>> buscarModulos()
+        {
+
+            Dictionary<int, List<string>> inform = new Dictionary<int, List<string>>();
+
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = " SELECT " +
+                                    " t1.id_tab_Button,  " +
+                                    " t1.codigo_permiso,  " +
+                                    " t1.nombre,  " +
+                                    " t2.nombre_apps  " +
+                           " FROM " +
+                                    " tab_button AS t1, " +
+                                    " tab_ribbonpanel AS t2 " +  
+                           "  WHERE " +
+                                    " t1.estado = 'Y'" +
+                           " AND " +
+                                    " t1.id_tab_ribbonPanel = t2.id_tab_ribbonPanel ";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+
+
+            try
+            {
+                databaseConnection.Open();
+                reader = commandDatabase.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        List<string> det = new List<string>();
+                        det.Add(reader.GetString(1));
+                        det.Add(reader.GetString(2));
+                        det.Add(reader.GetString(3));
+
+                        inform.Add(reader.GetInt16(0), det);
+                    }
+                }
+
+                databaseConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+
+            return inform;
+
+
+        }
+
+
 
         private string buscoCorreoByLogin(string login)
         {
@@ -1076,7 +1171,6 @@ namespace SetupRLE
 
             try
             {
-                string correoUser = "ang.aquino92@gmail.com";
                 string macAddress = "D43D7E56EC7B";
                 string motherBoard = "To be filled by O.E.M.";
                 string hardDisk = "A4ADE838";
@@ -1157,6 +1251,21 @@ namespace SetupRLE
                 }
                 string keyEncrypter = "renelago";
                 EncryptFile(path, keyEncrypter);
+
+
+                // Cargar la informacion en la base de datos. 
+                if (RegistroEnvioManual(correoUser, motherBoard, hardDisk, cpu) && CargoLicenciaAlServidor(correoUser, "", motherBoard, hardDisk, cpu, macAddress))
+                {
+                    MessageBox.Show("Licencia generada y registrada.");
+                }
+                else
+                {
+                    MessageBox.Show("Problema al registrar la licencia.");
+                }
+                
+
+
+
             }
 
             catch (Exception ex)
@@ -1269,8 +1378,6 @@ namespace SetupRLE
             using (StreamReader file = new StreamReader(rutaArchivo))
             {
                 string[] separators = { ":" };
-                string mac = "";
-                string login = "";
                 while ((line = file.ReadLine()) != null)                //Leer linea por linea
                 {
                     string[] words = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
@@ -1407,6 +1514,120 @@ namespace SetupRLE
 
         }
 
+
+
+        private int getIdUser(string login)
+        {
+            int informacion = 0;
+
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = " SELECT " +
+                                   " t1.id_sist_user " +
+                            " FROM " +
+                                    " sist_user AS t1 " +
+                            " WHERE " +
+                                    " t1.login = '" + login + "'";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+
+
+            try
+            {
+                databaseConnection.Open();
+                reader = commandDatabase.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        informacion = reader.GetInt16(0);
+                    }
+                }
+                else
+                {
+
+                }
+
+                databaseConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+
+            return informacion;
+
+        }
+
+        private Dictionary<int, int> getInformacionPermisos(string login)
+        {
+            Dictionary<int, int> informacion = new Dictionary<int, int>();
+
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = " SELECT " +
+                                   " if (t2.id_tab_Button is null, 0, t2.id_tab_Button), " +
+                                   " t1.id_sist_user " +
+                            " FROM " +
+                                    " sist_user AS t1 " +
+                                    " LEFT JOIN sist_user_permisos as t2 ON  t1.id_sist_user = t2.id_sist_user" +
+                            " WHERE " +
+                                    " t1.login = '"+ login + "'";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+
+
+            try
+            {
+                databaseConnection.Open();
+                reader = commandDatabase.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        informacion.Add(reader.GetInt16(0), reader.GetInt16(1));
+                    }
+                }
+                else
+                {
+
+                }
+
+                databaseConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+
+            return informacion;
+
+        }
+
         private void btn_liberar_Click(object sender, EventArgs e)
         {
             // para poder eliminar la licencia tenemos que eliminar los registros de las tablas 
@@ -1422,6 +1643,9 @@ namespace SetupRLE
             txt_morherboard_bd.Text = "";
             txt_hardisk_bd.Text = "";
             txt_cpu_bd.Text = "";
+
+            // 
+            MessageBox.Show("Licencia liberada");
 
             btn_Buscar_Click(sender, e);
         }
@@ -1489,6 +1713,241 @@ namespace SetupRLE
             txt_morherboard_bd.Text = txt_motherborad_l.Text;
             txt_hardisk_bd.Text = txt_hardiskt_l.Text;
             txt_cpu_bd.Text = txt_cpu_l.Text;
+
+            MessageBox.Show("Ids de componentes importados.");
         }
+
+        public static DialogResult InputBox(string title, string promptText, ref string value)
+        {
+            Form form = new Form();
+            form.StartPosition = FormStartPosition.CenterParent;
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+            textBox.Text = value;
+            textBox.PasswordChar = '*';
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(9, 20, 372, 13);
+            textBox.SetBounds(12, 36, 372, 20);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new System.Drawing.Size(396, 107);
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+            value = textBox.Text;
+            return dialogResult;
+        }
+
+        private void btn_administrador_Click(object sender, EventArgs e)
+        {
+            string value = "";
+            if (InputBox("Ingresar Contraseña", "Contraseña:", ref value) == DialogResult.OK)
+            {
+                if (value == "RL$idi2021")
+                {
+                    // contraseña valida.
+                    tbp_manual.Parent = tabControl1;
+                    tbp_Permisos.Parent = tabControl1;
+                    btn_cerrar.Visible = true;
+                }
+                else
+                {
+                    MessageBox.Show("error :" + "Contraseña incorrecta");
+                }
+            }
+        }
+
+        private void btn_cerrar_Click(object sender, EventArgs e)
+        {
+            tbp_manual.Parent = null;
+            tbp_Permisos.Parent = null;
+        }
+
+
+        private Boolean RegistroEnvioManual(string correo, string motherborad, string harddisk , string cpu)
+        {
+
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = @"  INSERT " +
+                                    " INTO " +
+                                           " sist_user_install " +
+                                    " ( " +
+                                            " fechaSolicitud, " +
+                                            " fechaCaduca, " +
+                                            " fechaIngreso, " +
+                                            " mailSolicitante, " +
+                                            " codigoEntregado, " +
+                                            " id_estado, " +
+                                            " motherBoard, " +
+                                            " harddisk, " +
+                                            " cpu " +
+                                    " ) " +
+                                    " VALUES " +
+                                    " ( NOW()  ,NOW()  ,NOW()  ,'" + correo + "' , '" + getCodigoEnviaMail() + "', '3' , '"+ motherborad + "' , '"+ harddisk + "' , '"+ cpu + "' ) ";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(query, databaseConnection);
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "SELECT LAST_INSERT_ID()";
+                IDataReader reader = cmd.ExecuteReader();
+                if (reader != null && reader.Read())
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error " + ex.Message);
+                return false;
+            }
+
+        }
+
+        private void btn_BuscarPermisos_Click(object sender, EventArgs e)
+        {
+            //
+            dgw_permisos.Rows.Clear();
+            string login = txt_buscadorPermisos.Text;
+
+            Dictionary<int,int> informacion =  getInformacionPermisos(login);
+
+
+            if (informacion.Count > 0)
+            {
+                // Carga Todos los permisos. 
+                lbl_id.Text = getIdUser(login).ToString();
+                cargaModulos(informacion);
+            }
+            else
+            { 
+            
+            }
+
+            
+        }
+
+        private void btn_Editar_Click(object sender, EventArgs e)
+        {
+            // Actualizar la informacion de los modulos. 
+
+            EliminarPermisosUsuario(Convert.ToInt32( lbl_id.Text)); // 
+            
+            foreach (DataGridViewRow r in dgw_permisos.Rows)
+            {
+                int id = Convert.ToInt16(r.Cells[0].Value);
+                int idx = Convert.ToInt16(r.Cells[1].Value);
+
+
+                if (idx == 1)
+                {
+                    insertPermisoUsuario(Convert.ToInt32(lbl_id.Text), id);
+                }
+            }
+
+            MessageBox.Show(" Permisos Actualizados");
+
+        }
+
+
+        private void insertPermisoUsuario(int idUser, int idTab)
+        {
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+
+            string query = @"  INSERT " +
+                                    " INTO " +
+                                           " sist_user_permisos " +
+                                    " ( " +
+                                            " id_sist_user, " +
+                                            " id_tab_Button " +
+                                    " ) " +
+                                    " VALUES " +
+                                    " (  "+ idUser + " , " + idTab + ") ";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(query, databaseConnection);
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error " + ex.Message);
+            }
+
+
+        }
+
+        private Boolean EliminarPermisosUsuario(int keyUsuario)
+        {
+            string database = "rle_aws";
+            string server = "18.228.215.203"; // verificar si podemos llevar esto a un servidor en la nube.
+            string userName = "root";
+            string password = "NRle.2019$TI*.";
+
+            string connectionString = "datasource=" + server + ";port=3306;username=" + userName + ";password=" + password + ";database=" + database + ";";
+
+            string query = "DELETE FROM sist_user_permisos where id_sist_user = " + keyUsuario + "";
+
+
+            MySqlConnection databaseConnection = new MySqlConnection(connectionString);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(query, databaseConnection);
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error " + ex.Message);
+                return false;
+            }
+
+        }
+
     }
 }

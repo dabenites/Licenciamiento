@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbp_ValidarUser = new System.Windows.Forms.TabPage();
+            this.btn_administrador = new System.Windows.Forms.Button();
             this.@__descarga = new System.Windows.Forms.Label();
             this.lbl_descarga = new System.Windows.Forms.Label();
             this.lbl_mensajeCodigo = new System.Windows.Forms.Label();
@@ -44,7 +45,8 @@
             this.btn_Solicitar = new System.Windows.Forms.Button();
             this.txt_correo = new System.Windows.Forms.TextBox();
             this.lbl_correo = new System.Windows.Forms.Label();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tbp_manual = new System.Windows.Forms.TabPage();
+            this.btn_cerrar = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ptb_cpu = new System.Windows.Forms.PictureBox();
@@ -65,6 +67,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txt_hardisk_equipo = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label19 = new System.Windows.Forms.Label();
             this.txt_motherborad_l = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txt_macaddress_l = new System.Windows.Forms.TextBox();
@@ -74,17 +77,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txt_hardiskt_l = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.lbl_appdata = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.lbl_destino = new System.Windows.Forms.Label();
-            this.btn_Folder = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_ImportarIds = new System.Windows.Forms.Button();
             this.btn_Generar = new System.Windows.Forms.Button();
-            this.txt_login_l = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txt_correo_base = new System.Windows.Forms.TextBox();
-            this.btn_Buscar = new System.Windows.Forms.Button();
+            this.btn_liberar = new System.Windows.Forms.Button();
             this.txt_morherboard_bd = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.txt_macadress_bd = new System.Windows.Forms.TextBox();
@@ -93,12 +88,30 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.txt_hardisk_bd = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.btn_liberar = new System.Windows.Forms.Button();
-            this.btn_ImportarIds = new System.Windows.Forms.Button();
+            this.btn_Buscar = new System.Windows.Forms.Button();
+            this.txt_login_l = new System.Windows.Forms.TextBox();
+            this.txt_correo_base = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lbl_appdata = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lbl_destino = new System.Windows.Forms.Label();
+            this.btn_Folder = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tbp_Permisos = new System.Windows.Forms.TabPage();
+            this.lbl_id = new System.Windows.Forms.Label();
+            this.btn_Editar = new System.Windows.Forms.Button();
+            this.dgw_permisos = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chk_permiso = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.tab_modulo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btn_BuscarPermisos = new System.Windows.Forms.Button();
+            this.txt_buscadorPermisos = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tbp_ValidarUser.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tbp_manual.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptb_cpu)).BeginInit();
@@ -107,12 +120,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.ptb_macaddres)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tbp_Permisos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgw_permisos)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tbp_ValidarUser);
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tbp_manual);
+            this.tabControl1.Controls.Add(this.tbp_Permisos);
             this.tabControl1.Location = new System.Drawing.Point(1, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -121,6 +137,7 @@
             // 
             // tbp_ValidarUser
             // 
+            this.tbp_ValidarUser.Controls.Add(this.btn_administrador);
             this.tbp_ValidarUser.Controls.Add(this.@__descarga);
             this.tbp_ValidarUser.Controls.Add(this.lbl_descarga);
             this.tbp_ValidarUser.Controls.Add(this.lbl_mensajeCodigo);
@@ -141,6 +158,16 @@
             this.tbp_ValidarUser.TabIndex = 0;
             this.tbp_ValidarUser.Text = "Validacion Usuario";
             this.tbp_ValidarUser.UseVisualStyleBackColor = true;
+            // 
+            // btn_administrador
+            // 
+            this.btn_administrador.Location = new System.Drawing.Point(277, 217);
+            this.btn_administrador.Name = "btn_administrador";
+            this.btn_administrador.Size = new System.Drawing.Size(80, 23);
+            this.btn_administrador.TabIndex = 14;
+            this.btn_administrador.Text = "Ingresar Adm";
+            this.btn_administrador.UseVisualStyleBackColor = true;
+            this.btn_administrador.Click += new System.EventHandler(this.btn_administrador_Click);
             // 
             // __descarga
             // 
@@ -260,21 +287,33 @@
             this.lbl_correo.TabIndex = 0;
             this.lbl_correo.Text = "Ingrese Correo :";
             // 
-            // tabPage1
+            // tbp_manual
             // 
-            this.tabPage1.Controls.Add(this.tabControl2);
-            this.tabPage1.Controls.Add(this.lbl_appdata);
-            this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.lbl_destino);
-            this.tabPage1.Controls.Add(this.btn_Folder);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(381, 248);
-            this.tabPage1.TabIndex = 1;
-            this.tabPage1.Text = "Licenciamiento Manual";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tbp_manual.Controls.Add(this.btn_cerrar);
+            this.tbp_manual.Controls.Add(this.tabControl2);
+            this.tbp_manual.Controls.Add(this.lbl_appdata);
+            this.tbp_manual.Controls.Add(this.label8);
+            this.tbp_manual.Controls.Add(this.lbl_destino);
+            this.tbp_manual.Controls.Add(this.btn_Folder);
+            this.tbp_manual.Controls.Add(this.button1);
+            this.tbp_manual.Location = new System.Drawing.Point(4, 22);
+            this.tbp_manual.Name = "tbp_manual";
+            this.tbp_manual.Padding = new System.Windows.Forms.Padding(3);
+            this.tbp_manual.Size = new System.Drawing.Size(381, 248);
+            this.tbp_manual.TabIndex = 1;
+            this.tbp_manual.Text = "Licenciamiento Manual";
+            this.tbp_manual.UseVisualStyleBackColor = true;
+            // 
+            // btn_cerrar
+            // 
+            this.btn_cerrar.Location = new System.Drawing.Point(293, 222);
+            this.btn_cerrar.Name = "btn_cerrar";
+            this.btn_cerrar.Size = new System.Drawing.Size(80, 23);
+            this.btn_cerrar.TabIndex = 24;
+            this.btn_cerrar.Text = "Cerrar";
+            this.btn_cerrar.UseVisualStyleBackColor = true;
+            this.btn_cerrar.Visible = false;
+            this.btn_cerrar.Click += new System.EventHandler(this.btn_cerrar_Click);
             // 
             // tabControl2
             // 
@@ -482,6 +521,17 @@
             this.tabPage3.Text = "Componentes";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label19
+            // 
+            this.label19.AutoEllipsis = true;
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(6, 16);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(165, 13);
+            this.label19.TabIndex = 18;
+            this.label19.Text = "IDs componentes PC Actual";
+            // 
             // txt_motherborad_l
             // 
             this.txt_motherborad_l.Location = new System.Drawing.Point(76, 67);
@@ -580,54 +630,16 @@
             this.tabPage4.Text = "Buscador";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // lbl_appdata
+            // btn_ImportarIds
             // 
-            this.lbl_appdata.AutoSize = true;
-            this.lbl_appdata.ForeColor = System.Drawing.Color.Maroon;
-            this.lbl_appdata.Location = new System.Drawing.Point(75, 226);
-            this.lbl_appdata.Name = "lbl_appdata";
-            this.lbl_appdata.Size = new System.Drawing.Size(19, 13);
-            this.lbl_appdata.TabIndex = 22;
-            this.lbl_appdata.Text = "__";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 225);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(57, 13);
-            this.label8.TabIndex = 21;
-            this.label8.Text = "APPDATA";
-            // 
-            // lbl_destino
-            // 
-            this.lbl_destino.AutoSize = true;
-            this.lbl_destino.Location = new System.Drawing.Point(94, 12);
-            this.lbl_destino.Name = "lbl_destino";
-            this.lbl_destino.Size = new System.Drawing.Size(41, 13);
-            this.lbl_destino.TabIndex = 6;
-            this.lbl_destino.Text = "_####";
-            // 
-            // btn_Folder
-            // 
-            this.btn_Folder.Location = new System.Drawing.Point(8, 6);
-            this.btn_Folder.Name = "btn_Folder";
-            this.btn_Folder.Size = new System.Drawing.Size(81, 24);
-            this.btn_Folder.TabIndex = 5;
-            this.btn_Folder.Text = "Ruta destino ";
-            this.btn_Folder.UseVisualStyleBackColor = true;
-            this.btn_Folder.Click += new System.EventHandler(this.btn_Folder_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(346, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(20, 12);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Solicitar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            this.btn_ImportarIds.Location = new System.Drawing.Point(280, 66);
+            this.btn_ImportarIds.Name = "btn_ImportarIds";
+            this.btn_ImportarIds.Size = new System.Drawing.Size(75, 23);
+            this.btn_ImportarIds.TabIndex = 29;
+            this.btn_ImportarIds.Text = "Importar Ids";
+            this.btn_ImportarIds.UseVisualStyleBackColor = true;
+            this.btn_ImportarIds.Visible = false;
+            this.btn_ImportarIds.Click += new System.EventHandler(this.btn_ImportarIds_Click);
             // 
             // btn_Generar
             // 
@@ -640,49 +652,16 @@
             this.btn_Generar.Visible = false;
             this.btn_Generar.Click += new System.EventHandler(this.btn_Generar_Click);
             // 
-            // txt_login_l
+            // btn_liberar
             // 
-            this.txt_login_l.Location = new System.Drawing.Point(77, 7);
-            this.txt_login_l.Name = "txt_login_l";
-            this.txt_login_l.Size = new System.Drawing.Size(197, 20);
-            this.txt_login_l.TabIndex = 18;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 36);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Correo";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(36, 10);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(33, 13);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Login";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txt_correo_base
-            // 
-            this.txt_correo_base.Location = new System.Drawing.Point(76, 33);
-            this.txt_correo_base.Name = "txt_correo_base";
-            this.txt_correo_base.ReadOnly = true;
-            this.txt_correo_base.Size = new System.Drawing.Size(197, 20);
-            this.txt_correo_base.TabIndex = 13;
-            // 
-            // btn_Buscar
-            // 
-            this.btn_Buscar.Location = new System.Drawing.Point(280, 4);
-            this.btn_Buscar.Name = "btn_Buscar";
-            this.btn_Buscar.Size = new System.Drawing.Size(75, 23);
-            this.btn_Buscar.TabIndex = 19;
-            this.btn_Buscar.Text = "Buscar";
-            this.btn_Buscar.UseVisualStyleBackColor = true;
-            this.btn_Buscar.Click += new System.EventHandler(this.btn_Buscar_Click);
+            this.btn_liberar.Location = new System.Drawing.Point(280, 88);
+            this.btn_liberar.Name = "btn_liberar";
+            this.btn_liberar.Size = new System.Drawing.Size(75, 23);
+            this.btn_liberar.TabIndex = 28;
+            this.btn_liberar.Text = "Liberar";
+            this.btn_liberar.UseVisualStyleBackColor = true;
+            this.btn_liberar.Visible = false;
+            this.btn_liberar.Click += new System.EventHandler(this.btn_liberar_Click);
             // 
             // txt_morherboard_bd
             // 
@@ -756,38 +735,201 @@
             this.txt_hardisk_bd.Size = new System.Drawing.Size(197, 20);
             this.txt_hardisk_bd.TabIndex = 26;
             // 
-            // label19
+            // btn_Buscar
             // 
-            this.label19.AutoEllipsis = true;
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(6, 16);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(165, 13);
-            this.label19.TabIndex = 18;
-            this.label19.Text = "IDs componentes PC Actual";
+            this.btn_Buscar.Location = new System.Drawing.Point(280, 4);
+            this.btn_Buscar.Name = "btn_Buscar";
+            this.btn_Buscar.Size = new System.Drawing.Size(75, 23);
+            this.btn_Buscar.TabIndex = 19;
+            this.btn_Buscar.Text = "Buscar";
+            this.btn_Buscar.UseVisualStyleBackColor = true;
+            this.btn_Buscar.Click += new System.EventHandler(this.btn_Buscar_Click);
             // 
-            // btn_liberar
+            // txt_login_l
             // 
-            this.btn_liberar.Location = new System.Drawing.Point(280, 88);
-            this.btn_liberar.Name = "btn_liberar";
-            this.btn_liberar.Size = new System.Drawing.Size(75, 23);
-            this.btn_liberar.TabIndex = 28;
-            this.btn_liberar.Text = "Liberar";
-            this.btn_liberar.UseVisualStyleBackColor = true;
-            this.btn_liberar.Visible = false;
-            this.btn_liberar.Click += new System.EventHandler(this.btn_liberar_Click);
+            this.txt_login_l.Location = new System.Drawing.Point(77, 7);
+            this.txt_login_l.Name = "txt_login_l";
+            this.txt_login_l.Size = new System.Drawing.Size(197, 20);
+            this.txt_login_l.TabIndex = 18;
             // 
-            // btn_ImportarIds
+            // txt_correo_base
             // 
-            this.btn_ImportarIds.Location = new System.Drawing.Point(280, 66);
-            this.btn_ImportarIds.Name = "btn_ImportarIds";
-            this.btn_ImportarIds.Size = new System.Drawing.Size(75, 23);
-            this.btn_ImportarIds.TabIndex = 29;
-            this.btn_ImportarIds.Text = "Importar Ids";
-            this.btn_ImportarIds.UseVisualStyleBackColor = true;
-            this.btn_ImportarIds.Visible = false;
-            this.btn_ImportarIds.Click += new System.EventHandler(this.btn_ImportarIds_Click);
+            this.txt_correo_base.Location = new System.Drawing.Point(76, 33);
+            this.txt_correo_base.Name = "txt_correo_base";
+            this.txt_correo_base.ReadOnly = true;
+            this.txt_correo_base.Size = new System.Drawing.Size(197, 20);
+            this.txt_correo_base.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(32, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Correo";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(36, 10);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 13);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Login";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_appdata
+            // 
+            this.lbl_appdata.AutoSize = true;
+            this.lbl_appdata.ForeColor = System.Drawing.Color.Maroon;
+            this.lbl_appdata.Location = new System.Drawing.Point(75, 226);
+            this.lbl_appdata.Name = "lbl_appdata";
+            this.lbl_appdata.Size = new System.Drawing.Size(19, 13);
+            this.lbl_appdata.TabIndex = 22;
+            this.lbl_appdata.Text = "__";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 225);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(57, 13);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "APPDATA";
+            // 
+            // lbl_destino
+            // 
+            this.lbl_destino.AutoSize = true;
+            this.lbl_destino.Location = new System.Drawing.Point(94, 12);
+            this.lbl_destino.Name = "lbl_destino";
+            this.lbl_destino.Size = new System.Drawing.Size(41, 13);
+            this.lbl_destino.TabIndex = 6;
+            this.lbl_destino.Text = "_####";
+            // 
+            // btn_Folder
+            // 
+            this.btn_Folder.Location = new System.Drawing.Point(8, 6);
+            this.btn_Folder.Name = "btn_Folder";
+            this.btn_Folder.Size = new System.Drawing.Size(81, 24);
+            this.btn_Folder.TabIndex = 5;
+            this.btn_Folder.Text = "Ruta destino ";
+            this.btn_Folder.UseVisualStyleBackColor = true;
+            this.btn_Folder.Click += new System.EventHandler(this.btn_Folder_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(346, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(20, 12);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Solicitar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // tbp_Permisos
+            // 
+            this.tbp_Permisos.Controls.Add(this.lbl_id);
+            this.tbp_Permisos.Controls.Add(this.btn_Editar);
+            this.tbp_Permisos.Controls.Add(this.dgw_permisos);
+            this.tbp_Permisos.Controls.Add(this.btn_BuscarPermisos);
+            this.tbp_Permisos.Controls.Add(this.txt_buscadorPermisos);
+            this.tbp_Permisos.Controls.Add(this.label20);
+            this.tbp_Permisos.Location = new System.Drawing.Point(4, 22);
+            this.tbp_Permisos.Name = "tbp_Permisos";
+            this.tbp_Permisos.Padding = new System.Windows.Forms.Padding(3);
+            this.tbp_Permisos.Size = new System.Drawing.Size(381, 248);
+            this.tbp_Permisos.TabIndex = 2;
+            this.tbp_Permisos.Text = "Permisos";
+            this.tbp_Permisos.UseVisualStyleBackColor = true;
+            // 
+            // lbl_id
+            // 
+            this.lbl_id.AutoSize = true;
+            this.lbl_id.Location = new System.Drawing.Point(302, 11);
+            this.lbl_id.Name = "lbl_id";
+            this.lbl_id.Size = new System.Drawing.Size(25, 13);
+            this.lbl_id.TabIndex = 25;
+            this.lbl_id.Text = "___";
+            this.lbl_id.Visible = false;
+            // 
+            // btn_Editar
+            // 
+            this.btn_Editar.Location = new System.Drawing.Point(7, 222);
+            this.btn_Editar.Name = "btn_Editar";
+            this.btn_Editar.Size = new System.Drawing.Size(364, 23);
+            this.btn_Editar.TabIndex = 24;
+            this.btn_Editar.Text = "Actualizar";
+            this.btn_Editar.UseVisualStyleBackColor = true;
+            this.btn_Editar.Click += new System.EventHandler(this.btn_Editar_Click);
+            // 
+            // dgw_permisos
+            // 
+            this.dgw_permisos.AllowUserToAddRows = false;
+            this.dgw_permisos.AllowUserToDeleteRows = false;
+            this.dgw_permisos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgw_permisos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.id,
+            this.chk_permiso,
+            this.tab_modulo,
+            this.descripcion});
+            this.dgw_permisos.Location = new System.Drawing.Point(7, 35);
+            this.dgw_permisos.Name = "dgw_permisos";
+            this.dgw_permisos.RowHeadersVisible = false;
+            this.dgw_permisos.Size = new System.Drawing.Size(364, 185);
+            this.dgw_permisos.TabIndex = 23;
+            // 
+            // id
+            // 
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // chk_permiso
+            // 
+            this.chk_permiso.HeaderText = "Estado";
+            this.chk_permiso.Name = "chk_permiso";
+            this.chk_permiso.Width = 50;
+            // 
+            // tab_modulo
+            // 
+            this.tab_modulo.HeaderText = "Grupo";
+            this.tab_modulo.Name = "tab_modulo";
+            this.tab_modulo.Width = 140;
+            // 
+            // descripcion
+            // 
+            this.descripcion.HeaderText = "Modulo";
+            this.descripcion.Name = "descripcion";
+            this.descripcion.Width = 160;
+            // 
+            // btn_BuscarPermisos
+            // 
+            this.btn_BuscarPermisos.Location = new System.Drawing.Point(204, 6);
+            this.btn_BuscarPermisos.Name = "btn_BuscarPermisos";
+            this.btn_BuscarPermisos.Size = new System.Drawing.Size(95, 23);
+            this.btn_BuscarPermisos.TabIndex = 22;
+            this.btn_BuscarPermisos.Text = "Buscar";
+            this.btn_BuscarPermisos.UseVisualStyleBackColor = true;
+            this.btn_BuscarPermisos.Click += new System.EventHandler(this.btn_BuscarPermisos_Click);
+            // 
+            // txt_buscadorPermisos
+            // 
+            this.txt_buscadorPermisos.Location = new System.Drawing.Point(46, 8);
+            this.txt_buscadorPermisos.Name = "txt_buscadorPermisos";
+            this.txt_buscadorPermisos.Size = new System.Drawing.Size(152, 20);
+            this.txt_buscadorPermisos.TabIndex = 21;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(7, 11);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(33, 13);
+            this.label20.TabIndex = 20;
+            this.label20.Text = "Login";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frm
             // 
@@ -802,8 +944,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tbp_ValidarUser.ResumeLayout(false);
             this.tbp_ValidarUser.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tbp_manual.ResumeLayout(false);
+            this.tbp_manual.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
@@ -815,6 +957,9 @@
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.tbp_Permisos.ResumeLayout(false);
+            this.tbp_Permisos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgw_permisos)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -836,7 +981,7 @@
         private System.Windows.Forms.Label lbl_mensajeCodigo;
         private System.Windows.Forms.Label lbl_descarga;
         private System.Windows.Forms.Label __descarga;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tbp_manual;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btn_Folder;
         private System.Windows.Forms.Label lbl_destino;
@@ -888,6 +1033,19 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button btn_liberar;
         private System.Windows.Forms.Button btn_ImportarIds;
+        private System.Windows.Forms.Button btn_administrador;
+        private System.Windows.Forms.Button btn_cerrar;
+        private System.Windows.Forms.TabPage tbp_Permisos;
+        private System.Windows.Forms.Button btn_BuscarPermisos;
+        private System.Windows.Forms.TextBox txt_buscadorPermisos;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.DataGridView dgw_permisos;
+        private System.Windows.Forms.Button btn_Editar;
+        private System.Windows.Forms.Label lbl_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn chk_permiso;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tab_modulo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descripcion;
     }
 }
 

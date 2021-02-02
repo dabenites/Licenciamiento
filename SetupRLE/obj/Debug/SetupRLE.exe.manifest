@@ -127,14 +127,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SetupRLE.exe" size="1338368">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SetupRLE.exe" size="1348096">
       <assemblyIdentity name="SetupRLE" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>7sNIxv7U/800EjtHnToxlyhTvB3od6y/7lZ1h1+SrbE=</dsig:DigestValue>
+        <dsig:DigestValue>s7jeeqExmmeJ3O0dlqDZ92HsCiL4UrMPV6mVmW0x+Yg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
